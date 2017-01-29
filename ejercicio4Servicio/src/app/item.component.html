@@ -1,0 +1,4 @@
+<span [style.textDecoration]="item.check?'line-through':''">
+    <input type="checkbox" [(ngModel)]="item.checked" (change)="toggleCheck()" >{{item.description}}
+    <button (click)="clickDelete()">Delete</button>
+</span>

@@ -1,0 +1,13 @@
+<h1>A checklist</h1>
+
+<div *ngIf="list.length===0">There are no items yet</div>
+
+<ul>
+  <li *ngFor="let item of list">
+    <item [item]="item" (delete)="onDeleteItem($event)" (check)="onToggleCheck($event)" ></item>
+  </li>
+</ul>
+
+<hr>
+
+<input type="text" [(ngModel)]="inputContent"/> <button (click)="addContent()">Add Content</button>
