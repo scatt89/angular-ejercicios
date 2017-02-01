@@ -12,28 +12,35 @@ export class ItemService{
     constructor(private http:Http){}
 
     //get
-    getItems():Observable<Item> {
+    getItems():Observable<Item[]> {
         return this.http.get(this.BASE_URL).map(
             response => {
                 let items: Item[] = [];
                 for(let item of response.json()){
-                    item.
+                  items.push({
+                    id: item.id,
+                    checked: item.checked === true || item.checked === "true",
+                    description: item.description
+                  });
                 }
-                return response.json();
-            },
-            error => error
-        );
+                return items;
+            }
+        )
     }
 
     //post
-    addItem(item:Item){
+    addItem(item:Item):Observable<Item>{
         return this.http.post(this.BASE_URL,item).map(
-            response => response.json()
+            response => {
+              let item: Item = response.json();
+              item.checked = item.checked === true || String(item.checked) === "true";
+              return item;
+            }
         );
     }
 
     //delete
-    deleleItem(item:Item){
+    deleteItem(item:Item):Observable<Item>{
         return this.http.delete(this.BASE_URL+item.id).map(
             response => response.json()
         );
@@ -41,8 +48,8 @@ export class ItemService{
 
     //put
     modifyItem(item:Item){
-        return this.http.put().map(
-
+        return this.http.put(this.BASE_URL+item.id, item).map(
+            response => response.json()
         );
     }
 }

@@ -12,7 +12,6 @@ import { ItemService } from './item.service';
 export class AppComponent implements OnInit {
   list: Item[] = [];
   inputContent: string;
-  BASE_URL: string = "http://localhost:8080/items/";
 
   constructor(private itemService:ItemService){  }
 
@@ -25,35 +24,38 @@ export class AppComponent implements OnInit {
 
   //post
   addContent(){
-    let itemAux = {description:this.inputContent, check:false};
-    this.http.post(this.BASE_URL,itemAux).subscribe(
-      response => {
-        this.list.push(itemAux);
-        this.inputContent = "";
-        console.log(response);
-      },
-      error => console.log(error)
+    let itemAux = {description:this.inputContent, checked:false};
+
+    this.itemService.addItem(itemAux).subscribe(
+      item => {
+        console.info(item);
+        this.list.push(item);
+      }, error => this.handleError(error)
     );
+
     this.inputContent = "";
   }
 
   //delete
   onDeleteItem(item:Item){
-    this.http.delete(this.BASE_URL+item.id).subscribe(
-      response => {
+    this.itemService.deleteItem(item).subscribe(
+      itemResponse => {
         this.list.splice(this.list.indexOf(item),1);
-        console.log(response.json());
+        console.log(item);
       },
-      error => console.error(error)
+      error => this.handleError(error)
     );
   }
 
   //put
   onToggleCheck(item:Item){
-    let itemAux = {description: item.description, checked:item.checked};
-    this.http.put(this.BASE_URL+item.id, itemAux).subscribe(
+    this.itemService.modifyItem(item).subscribe(
       response => console.log(response),
-      error => console.error(error)
+      error => this.handleError(error)
     );
+  }
+
+  handleError(error: any){
+    console.error(error);
   }
 }
