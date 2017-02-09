@@ -10,6 +10,6 @@ const appRoutes = [
     {path:'books/edit/:id', component: BookEditComponent},
     {path:'books/:id', component: BookDetailComponent},
     {path:'', redirectTo:'books', pathMatch: 'full'}
-]
+];
 
 export const routing = RouterModule.forRoot(appRoutes);

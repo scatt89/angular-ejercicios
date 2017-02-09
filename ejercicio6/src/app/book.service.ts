@@ -26,26 +26,28 @@ export class BookService{
     }
 
     //post
-    addItem(item:Item):Observable<Item>{
-        return this.http.post(this.BASE_URL,item).map(
-            response => {
-              let item: Item = response.json();
-              item.checked = item.checked === true || String(item.checked) === "true";
-              return item;
-            }
+    addItem(book:Book):Observable<Book>{
+        return this.http.post(this.BASE_URL,book).map(
+            response => response.json()
         );
     }
 
-    //delete
-    deleteBook(id:number):Observable<Book>{
-        return this.http.delete(this.BASE_URL+id).map(
+  /**
+   * Dado un id o un objeto libro, borra dicho libro de la base de datos
+   *
+   * @param id
+   * @returns {Observable<Book>}
+   */
+    deleteBook(id:number|Book):Observable<Book>{
+        let url_id:number = (typeof id === "Book")?id.id:id;
+        return this.http.delete(this.BASE_URL+url_id).map(
             response => response.json()
         );
     }
 
     //put
-    modifyItem(item:Item){
-        return this.http.put(this.BASE_URL+item.id, item).map(
+    modifyItem(book:Book):Observable<Book>{
+        return this.http.put(this.BASE_URL+book.id, book).map(
             response => response.json()
         );
     }

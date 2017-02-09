@@ -5,20 +5,21 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'bookDetail',
-  templateUrl: `
+  template: `
     <h3>{{book?.title}}</h3>
-    <p>{{book?.description?}}</p>
+    <p>{{book?.description}}</p>
     <span>
         <button (click)="removeBook()">Remove</button>
         <button (click)="editBook()">Edit</button>
-    </span>
-    <button (click)="backToList()">back</button>
+    </span><br/>
+    <button [routerLink]="['/books']">back</button>
   `
 })
 export class BookDetailComponent implements OnInit{
+
     book: Book;
 
-    constructor(private bookService: BookService, 
+    constructor(private bookService: BookService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router){}
 
@@ -30,12 +31,18 @@ export class BookDetailComponent implements OnInit{
     }
 
     removeBook(){
+      if(confirm("Are you sure you want to remove this book?")){
         this.bookService.deleteBook(this.book.id).subscribe(
-            book => this.backToList()
+          book => this.backToList()
         );
+      }
+    }
+
+    editBook(){
+      this.router.navigate(['/books/edit',this.book.id]);
     }
 
     backToList(){
-        this.router.navigate(['books']);
+        this.router.navigate(['/books']);
     }
 }

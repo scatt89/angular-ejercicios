@@ -5,18 +5,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'bookList',
-  templateUrl: `
+  template: `
     <h2>Books</h2>
 
-    <div *ngIf="list.length===0">There are no books yet</div>
+    <div *ngIf="!books">There are no books yet</div>
 
     <ul>
-    <li *ngFor="let book of books">
-        <a [routerLink]="['book',book.id]">
-            {{book.id}} - {{book.title}}
-        </a>
-        <bookDetail></bookDetail>
-    </li>
+      <li *ngFor="let book of books">
+          <a [routerLink]="['/books',book.id]">
+              {{book.id}} - {{book.title}}
+          </a>
+      </li>
     </ul>
 
     <button (click)="newBook()" >New Book</button>
@@ -31,12 +30,13 @@ export class BookListComponent implements OnInit{
     //get
     ngOnInit(){
         this.bookService.getItems().subscribe(
-        books => this.books = books
+          books => this.books = books
         );
+
     }
 
     newBook(){
-        this.router.navigate(['books/new']);
+        this.router.navigate(['/books/new']);
     }
 
 }
