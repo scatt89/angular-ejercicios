@@ -1,0 +1,15 @@
+<ion-content padding>
+    <h2>Books</h2>
+
+    <div *ngIf="!books">There are no books yet</div>
+
+    <ul>
+      <li *ngFor="let book of books">
+          <a (click)="goToDetail()">
+              {{book.id}} - {{book.title}}
+          </a>
+      </li>
+    </ul>
+
+    <button (click)="newBook()" >New Book</button>
+</ion-content>
